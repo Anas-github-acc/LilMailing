@@ -1,0 +1,26 @@
+{
+  "name": "codeemail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --use-system-ca app/index.js",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.93.3",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.3",
+    "imap-simple": "^1.6.3",
+    "mailparser": "^3.9.3",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.13"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
+  }
+}
