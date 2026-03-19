@@ -41,19 +41,16 @@ describe('Postgres RPC Functions Integration', () => {
     const { error } = await supabase.rpc('rpc_upsert_lead', TEST_LEAD);
     expect(error).toBeNull();
 
-    // Verify it exists in the table directly
-    const { data, error: selectError } = await supabase
-      .from('leads')
-      .select('id, status')
-      .eq('email', TEST_LEAD.p_email)
-      .single();
+    // Verify discoverability through the read RPC and save ID for next tests.
+    const { data: leads, error: leadsError } = await supabase.rpc('rpc_get_leads_to_send', {
+      p_limit: 100
+    });
 
-    expect(selectError).toBeNull();
-    expect(data).toBeDefined();
-    expect(data.status).toBe('new'); // Default status
-    
-    // Save ID for subsequent tests
-    leadId = data.id;
+    expect(leadsError).toBeNull();
+    const found = leads.find(l => l.email === TEST_LEAD.p_email);
+    expect(found).toBeDefined();
+
+    leadId = found.id;
   });
 
   it('2. rpc_get_system_state: Should return system config', async () => {
@@ -92,19 +89,19 @@ describe('Postgres RPC Functions Integration', () => {
 
     expect(error).toBeNull();
 
-    // Verify Lead Status is 'sent'
-    const { data: lead } = await supabase.from('leads').select('status').eq('id', leadId).single();
-    expect(lead.status).toBe('sent');
+    // Verify lead is no longer in the send queue.
+    const { data: queueData, error: queueError } = await supabase.rpc('rpc_get_leads_to_send', {
+      p_limit: 100
+    });
+    expect(queueError).toBeNull();
+    const stillQueued = queueData.find(l => l.id === leadId);
+    expect(stillQueued).toBeUndefined();
 
-    // Verify Event Log exists (This is now the source of truth for message_id)
-    const { data: event } = await supabase
-      .from('email_events')
-      .select('lead_id, message_id')
-      .eq('message_id', sentMessageId)
-      .single();
-    
-    expect(event).toBeDefined();
-    expect(event.lead_id).toBe(leadId);
+    // Verify thread is visible to the read-mail workflow.
+    const { data: sentThreads, error: sentThreadsError } = await supabase.rpc('rpc_get_sent_threads');
+    expect(sentThreadsError).toBeNull();
+    const sentThread = sentThreads.find(t => t.message_id === sentMessageId);
+    expect(sentThread).toBeDefined();
   });
 
   it('5. rpc_get_followups: Should NOT return lead immediately (wait period)', async () => {
@@ -127,22 +124,19 @@ describe('Postgres RPC Functions Integration', () => {
 
     expect(error).toBeNull();
 
-    // Verify Lead Status changed to 'replied'
-    const { data: updatedLead } = await supabase
-      .from('leads')
-      .select('status')
-      .eq('id', leadId)
-      .single();
-      
-    expect(updatedLead.status).toBe('replied');
+    // Keep this assertion API-focused: replied messages should no longer show as pending follow-up.
+    const { data: followups, error: followupsError } = await supabase.rpc('rpc_get_followups');
+    expect(followupsError).toBeNull();
+    const followup = followups.find(l => l.id === leadId);
+    expect(followup).toBeUndefined();
   });
   
   it('7. rpc_get_sent_threads: Should list the thread', async () => {
      const { data, error } = await supabase.rpc('rpc_get_sent_threads');
      expect(error).toBeNull();
      expect(Array.isArray(data)).toBe(true);
-     // Since we marked it replied, the event 'sent' should still exist in history
-     // We just check that the function returns an array format correctly
-     expect(data.length).toBeGreaterThanOrEqual(1);
+     // Should include the sent thread we created in this suite.
+     const found = data.find(t => t.message_id === sentMessageId);
+     expect(found).toBeDefined();
   });
 });

@@ -1,20 +1,35 @@
-export function firstEmail(lead) {
-  return {
-    subject: `Quick question, ${lead.name}`,
-    body: `
-Hi ${lead.name},
+import { env } from "../../config/env.js";
 
-I'm Anas, a CS student with experience in backend and systems work.
+export function firstEmail(lead) {
+  const attachments = env.RESUME_PATH
+    ? [
+        {
+          filename: env.RESUME_FILENAME || "Anas-Resume.pdf",
+          path: env.RESUME_PATH
+        }
+      ]
+    : [];
+
+  return {
+    subject: `Inquiry: Engineering at ${lead.company} | Experience in Full-stack (Go/AWS)`,
+    body: `
+Hello ${lead.name},
+
+Hope you're having a great week.
+
 I came across ${lead.company} and wanted to reach out.
 
-I'm currently looking for internship / entry-level roles and wanted to ask
-if it makes sense to share my profile.
+I’m Anas, a CS student with ~6 months of production experience building and deploying full-stack systems.
 
-Best,
-Anas
+I’ve worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I’ve handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also a open source contributor and have contributed to Vercel’s Next.js.
 
-If this isn't relevant, just reply "no" and I won't follow up.
-`
+I’m currently looking for an internship or entry-level backend/DevOps role and would love to contribute to your team.
+
+Are you available for a brief chat sometime next week?
+
+Best regards,
+`,
+    attachments
   };
 }
 
@@ -28,7 +43,6 @@ Just following up once in case this got buried.
 Happy to share my resume if useful.
 
 Best,
-Anas
 `
   };
 }

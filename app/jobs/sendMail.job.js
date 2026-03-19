@@ -17,7 +17,10 @@ export async function sendMailJob() {
     const messageId = await sendMail(
       lead.email,
       mail.subject,
-      mail.body
+      mail.body,
+      {
+        attachments: mail.attachments
+      }
     );
 
     await supabase.rpc("rpc_mark_sent", {

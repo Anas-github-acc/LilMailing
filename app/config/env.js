@@ -8,6 +8,8 @@ export const env = {
   SMTP_PORT: process.env.SMTP_PORT,
   IMAP_HOST: process.env.IMAP_HOST,
   IMAP_PORT: process.env.IMAP_PORT,
+  RESUME_PATH: process.env.RESUME_PATH,
+  RESUME_FILENAME: process.env.RESUME_FILENAME,
   SEND_LIMIT: Number(process.env.SEND_LIMIT || 20),
   SEND_DELAY_MS: Number(process.env.SEND_DELAY_MS || 90000),
   SUPABASE_URL: process.env.SUPABASE_URL,
