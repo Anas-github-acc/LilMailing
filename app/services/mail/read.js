@@ -1,7 +1,7 @@
 import imaps from "imap-simple";
 import { simpleParser } from "mailparser";
 import { imapConfig } from "../../config/mail.config.js";
-import { normalizeSubject } from "../../utils/normalizeSubject.js";
+import { env } from "../../config/env.js";
 
 /**
  * sentMails = [
@@ -13,97 +13,162 @@ import { normalizeSubject } from "../../utils/normalizeSubject.js";
  * ]
  */
 export async function fetchReplies(sentMails = []) {
-  const indexes = buildSentMailIndexes(sentMails);
-
-  const conn = await imaps.connect(imapConfig);
-  await conn.openBox("INBOX");
-  
-  const sinceDate = new Date('2026-02-01');
-  const beforeDate = new Date('2026-02-04');
-  // const cutoff = Date.now() - (6 * 60 * 60 * 1000);
-  
-  const messages = await conn.search(
-    [
-      "UNSEEN",
-      // ['SINCE', new Date(cutoff)]
-      ['SINCE', sinceDate],
-      ['BEFORE', beforeDate]
-    ],
-    {
-      bodies: ['HEADER', "TEXT"],
-      // markSeen: true
-    }
-  );
-
-  const replies = [];
-
-  for (const msg of messages) {
-    const part = msg.parts.find(p => p.which === "TEXT");
-    const parsed = await simpleParser(part.body);
-
-    const matchedMail = findMatchingSentMail(parsed, indexes);
-
-    if (matchedMail) {
-      replies.push({
-        from: parsed.from.value[0].address,
-        original_message_id: matchedMail.message_id,
-        reply_subject: parsed.subject,
-        reply_text: parsed.text
-      });
-    }
+  if (!sentMails.length) {
+    return [];
   }
 
-  await conn.end();
-  return replies;
+  const indexes = buildSentMailIndexes(sentMails);
+  if (!indexes.messageIdIndex.size) {
+    return [];
+  }
+
+  const conn = await imaps.connect(imapConfig);
+  try {
+    await conn.openBox("INBOX");
+
+    const lookbackDays = env.REPLY_LOOKBACK_DAYS;
+    const sinceDate = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000);
+    const messages = await findCandidateReplies(conn, indexes.searchMessageIds, sinceDate);
+    const replies = [];
+
+    for (const msg of messages) {
+      const part = msg.parts.find((p) => p.which === "");
+      if (!part?.body) {
+        continue;
+      }
+
+      const parsed = await simpleParser(part.body);
+      const matchedMail = findMatchingSentMail(parsed, indexes);
+
+      if (matchedMail) {
+        replies.push({
+          from: parsed.from?.value?.[0]?.address,
+          original_message_id: matchedMail.message_id,
+          reply_subject: parsed.subject,
+          reply_text: parsed.text
+        });
+      }
+    }
+
+    return replies;
+  } finally {
+    await conn.end();
+  }
 }
 
 
 function buildSentMailIndexes(sentMails) {
-  const inbox = new Map();
-  const subjectIndex = new Map();
+  const messageIdIndex = new Map();
+  const searchMessageIds = [];
+  const seenSearchIds = new Set();
 
   for (const mail of sentMails) {
-    if (mail.message_id) {
-      const key = mail.message_id;
-      inbox.set(key, mail);
-    }
+    const rawMessageId = pickFirstMessageId(mail.message_id);
+    const key = normalizeMessageId(rawMessageId);
 
-    const subjectKey = makeHashKey(
-      normalizeSubject(mail.subject),
-      mail.to_email
-    );
-    subjectIndex.set(subjectKey, key);
+    if (key) {
+      messageIdIndex.set(key, mail);
+
+      if (!seenSearchIds.has(key)) {
+        seenSearchIds.add(key);
+        searchMessageIds.push(rawMessageId);
+      }
+    }
   }
 
   return {
-    inbox,
-    subjectIndex
+    messageIdIndex,
+    searchMessageIds
   };
+}
+
+async function findCandidateReplies(conn, messageIds, sinceDate) {
+  const uniqueByUid = new Map();
+
+  for (const messageId of messageIds) {
+    const inReplyToMessages = await conn.search(
+      [["SINCE", sinceDate], ["HEADER", "IN-REPLY-TO", messageId]],
+      { bodies: [""], struct: true }
+    );
+
+    for (const msg of inReplyToMessages) {
+      uniqueByUid.set(msg.attributes.uid, msg);
+    }
+
+    const referenceMessages = await conn.search(
+      [["SINCE", sinceDate], ["HEADER", "REFERENCES", messageId]],
+      { bodies: [""], struct: true }
+    );
+
+    for (const msg of referenceMessages) {
+      uniqueByUid.set(msg.attributes.uid, msg);
+    }
+  }
+
+  return Array.from(uniqueByUid.values());
 }
 
 function findMatchingSentMail(
   parsedMail,
   indexes
 ) {
-  const { inbox, subjectIndex } = indexes;
+  const { messageIdIndex } = indexes;
+  const ids = collectReplyMessageIds(parsedMail);
 
-  if (parsedMail.inReplyTo && store.has(parsedMail.inReplyTo)) {
-    return store.get(parsedMail.inReplyTo);
-  }
-
-  if (parsedMail.references?.length) {
-    for (const ref of parsedMail.references) {
-      if (store.has(ref)) {
-        return store.get(ref);
-      }
+  for (const id of ids) {
+    const key = normalizeMessageId(id);
+    if (key && messageIdIndex.has(key)) {
+      return messageIdIndex.get(key);
     }
   }
 
-  const subjectKey = makeHashKey(
-    normalizeSubject(parsedMail.subject),
-    parsedMail.from?.value?.[0]?.address
-  );
+  return null;
+}
 
-  const key = subjectIndex.get(subjectKey);
-  return key ? inbox.get(key) : null;
+function collectReplyMessageIds(parsedMail) {
+  const ids = [];
+
+  if (parsedMail.inReplyTo) {
+    ids.push(...extractMessageIds(parsedMail.inReplyTo));
+  }
+
+  const references = Array.isArray(parsedMail.references)
+    ? parsedMail.references
+    : parsedMail.references
+      ? [parsedMail.references]
+      : [];
+
+  if (references.length) {
+    for (const ref of references) {
+      ids.push(...extractMessageIds(ref));
+    }
+  }
+
+  return ids;
+}
+
+function extractMessageIds(value) {
+  if (!value) {
+    return [];
+  }
+
+  const text = Array.isArray(value) ? value.join(" ") : String(value);
+  const bracketedIds = text.match(/<[^<>\s]+>/g);
+
+  if (bracketedIds?.length) {
+    return bracketedIds;
+  }
+
+  const fallback = text.trim();
+  return fallback ? [fallback] : [];
+}
+
+function normalizeMessageId(value) {
+  const first = pickFirstMessageId(value);
+  return first ? first.trim().toLowerCase() : null;
+}
+
+function pickFirstMessageId(value) {
+  const [first] = extractMessageIds(value);
+  return first || null;
 }

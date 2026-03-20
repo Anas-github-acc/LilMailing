@@ -16,10 +16,10 @@ function buildFirstVariant(lead, fallback) {
   const subject = pick([
     `Inquiry: Engineering at ${company} | Experience in Full-stack (Go/AWS)`,
     `Engineering Inquiry - Backend/DevOps Experience (Go, AWS, Terraform)`,
-    `Interest in Engineering Roles at ${lead.company} - Backend & AWS Experience`,
-    `CS Student with Backend + AWS Deployment Experience | ${lead.company}`,
-    `Exploring Engineering Opportunities at ${lead.company} (Go, Node.js, AWS)`,
-    `Backend/DevOps Internship Inquiry - Experience with Go & AWS`
+    `Interest in Engineering Roles at ${company} - Backend & AWS Experience`,
+    `CS Student with Backend + AWS Deployment Experience | ${company}`,
+    `Exploring Engineering Opportunities at ${company} (Go, Node.js, AWS)`,
+    `Backend/DevOps Internship Inquiry - Experience with Go & AWS`,
     `Quick intro: interest in ${role} at ${company}`,
     `Exploring opportunities with ${company} (${role})`,
     `Internship/entry-level interest at ${company}`,

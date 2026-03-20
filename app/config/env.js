@@ -12,6 +12,7 @@ export const env = {
   RESUME_FILENAME: process.env.RESUME_FILENAME,
   SEND_LIMIT: Number(process.env.SEND_LIMIT || 20),
   SEND_DELAY_MS: Number(process.env.SEND_DELAY_MS || 90000),
+  REPLY_LOOKBACK_DAYS: Number(process.env.REPLY_LOOKBACK_DAYS || 14),
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
   GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
