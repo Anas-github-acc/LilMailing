@@ -1,6 +1,7 @@
 import { env } from "../../config/env.js";
+import { generateEmailFromAI } from "./aiComposer.js";
 
-export function firstEmail(lead) {
+function buildFirstEmailFallback(lead) {
   const attachments = env.RESUME_PATH
     ? [
         {
@@ -33,7 +34,7 @@ Best regards,
   };
 }
 
-export function followUpEmail(lead) {
+function buildFollowUpFallback(lead) {
   return {
     subject: `Re: Quick question, ${lead.name}`,
     body: `
@@ -45,4 +46,29 @@ Happy to share my resume if useful.
 Best,
 `
   };
+}
+
+export async function firstEmail(lead) {
+  const fallback = buildFirstEmailFallback(lead);
+
+  const aiMail = await generateEmailFromAI({
+    lead,
+    kind: "first",
+    fallback
+  });
+
+  return {
+    ...aiMail,
+    attachments: fallback.attachments
+  };
+}
+
+export async function followUpEmail(lead) {
+  const fallback = buildFollowUpFallback(lead);
+
+  return generateEmailFromAI({
+    lead,
+    kind: "follow_up",
+    fallback
+  });
 }

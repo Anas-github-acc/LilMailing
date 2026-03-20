@@ -13,5 +13,8 @@ export const env = {
   SEND_LIMIT: Number(process.env.SEND_LIMIT || 20),
   SEND_DELAY_MS: Number(process.env.SEND_DELAY_MS || 90000),
   SUPABASE_URL: process.env.SUPABASE_URL,
-  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY
+  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
+  GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
+  GOOGLE_AI_MODEL: process.env.GOOGLE_AI_MODEL || "gemini-2.5-flash",
+  AI_EMAIL_DEBUG: process.env.AI_EMAIL_DEBUG === "true"
 };

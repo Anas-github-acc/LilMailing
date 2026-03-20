@@ -8,7 +8,7 @@ export async function followUpJob() {
   const { data: leads } = await supabase.rpc("rpc_get_followups");
 
   for (const lead of leads) {
-    const mail = followUpEmail(lead);
+    const mail = await followUpEmail(lead);
 
     const messageId = await sendMail(
       lead.email,

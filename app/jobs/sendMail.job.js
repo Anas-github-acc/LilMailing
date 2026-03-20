@@ -13,7 +13,7 @@ export async function sendMailJob() {
   });
 
   for (const lead of leads) {
-    const mail = firstEmail(lead);
+    const mail = await firstEmail(lead);
     const messageId = await sendMail(
       lead.email,
       mail.subject,
