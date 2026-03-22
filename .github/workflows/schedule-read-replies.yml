@@ -3,7 +3,7 @@ name: Schedule Read Replies
 on:
   schedule:
     # Every 20 minutes, Monday-Thursday
-    - cron: "*/5 * * * *"
+    # - cron: "*/5 * * * *"
     # - cron: "33 2 * * *"
   workflow_dispatch:
 
