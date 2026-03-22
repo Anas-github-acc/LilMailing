@@ -12,7 +12,7 @@ function buildFirstEmailFallback(lead) {
     : [];
 
   return {
-    subject: `Inquiry: Engineering at ${lead.company} | Experience in Full-stack (Go/AWS)`,
+    subject: `Inquiry: Engineering at ${lead.company} | Experience in Full-stack`,
     body: `
 Hello ${lead.name},
 
@@ -20,15 +20,23 @@ Hope you're having a great week.
 
 I came across ${lead.company} and wanted to reach out.
 
-I’m Anas, a CS student with ~6 months of production experience building and deploying full-stack systems.
+I'm Anas, a CS student with ~6 months of production experience building and deploying full-stack systems.
 
-I’ve worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I’ve handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also a open source contributor and have contributed to Vercel’s Next.js.
+I've worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I've handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also an open source contributor and have contributed to Vercel's Next.js.
 
-I’m currently looking for an internship or entry-level backend/DevOps role and would love to contribute to your team.
+I'm currently looking for an internship or entry-level backend/DevOps role and would love to contribute to your team.
 
 Are you available for a brief chat sometime next week?
 
 Best regards,
+
+--
+Anas
+BTech Information Technology, 3rd Year
+Indian Institute of Information Technology, Vadodara
+Cell: (+91) 8081233871
+GitHub: https://github.com/Anas-github-acc
+LinkedIn: https://linkedin.com/in/anas-um
 `,
     attachments
   };
@@ -41,9 +49,9 @@ function buildFollowUpFallback(lead) {
 Hi ${lead.name},
 
 Just following up once in case this got buried.
-Happy to share my resume if useful.
 
 Best,
+Anas
 `
   };
 }

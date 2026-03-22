@@ -11,6 +11,7 @@ export const env = {
   RESUME_PATH: process.env.RESUME_PATH,
   RESUME_FILENAME: process.env.RESUME_FILENAME,
   SEND_LIMIT: Number(process.env.SEND_LIMIT || 20),
+  JOB_SEND_MAX_PER_RUN: Number(process.env.JOB_SEND_MAX_PER_RUN || 1),
   SEND_DELAY_MS: Number(process.env.SEND_DELAY_MS || 90000),
   REPLY_LOOKBACK_DAYS: Number(process.env.REPLY_LOOKBACK_DAYS || 14),
   SUPABASE_URL: process.env.SUPABASE_URL,

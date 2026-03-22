@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "node --use-system-ca app/index.js",
     "test": "vitest",
-    "preview:email": "node app/scripts/previewAiEmail.js"
+    "preview:email": "node app/scripts/previewAiEmail.js",
+    "job:send": "node --use-system-ca app/scripts/runJob.js send",
+    "job:read": "node --use-system-ca app/scripts/runJob.js read",
+    "job:follow-up": "node --use-system-ca app/scripts/runJob.js follow-up"
   },
   "keywords": [],
   "author": "",

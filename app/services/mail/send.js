@@ -22,9 +22,14 @@ export async function sendMail(
     subject,
     text,
     attachments: normalizedOptions.attachments,
+    list: {
+        unsubscribe: {
+            url: `https://${env.LIVE}/unsubscribe?email=${env.EMAIL_USER}&token=UNSUBSCRIBE_TOKEN`,
+            comment: 'Unsubscribe from these emails'
+        }
+    },
     headers: {
-      'List-Unsubscribe': `<https://${env.LIVE}/unsubscribe?email=${env.EMAIL_USER}&token=UNSUBSCRIBE_TOKEN>`,
-      'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
     }
   };
 
