@@ -211,59 +211,62 @@ async function requestModel(ai, prompt, preferJson) {
 
 export async function generateEmailFromAI({ lead, kind, fallback }) {
   const variantFallback = buildVariantFallbackEmail({ lead, kind, fallback });
-  const ai = getClient();
-  if (!ai || !env.GOOGLE_AI_MODEL) {
-    debugLog("missing-ai-config");
-    return variantFallback;
-  }
 
-  try {
-    const prompt = buildPrompt({ lead, kind, fallback });
+  return variantFallback; // TEMP: Disable AI generation while testing fallback templates.
 
-    const result = await requestModel(ai, prompt, true);
+  // const ai = getClient();
+  // if (!ai || !env.GOOGLE_AI_MODEL) {
+  //   debugLog("missing-ai-config");
+  //   return variantFallback;
+  // }
 
-    const text = extractText(result);
-    const parsed = parseModelJSON(text);
+  // try {
+  //   const prompt = buildPrompt({ lead, kind, fallback });
 
-    let subject = clean(parsed?.subject);
-    let body = clean(parsed?.body);
+  //   const result = await requestModel(ai, prompt, true);
 
-    if (!subject || !body) {
-      const loose = parseLooseJsonFields(text);
-      subject = subject || clean(loose?.subject);
-      body = body || clean(loose?.body);
-    }
+  //   const text = extractText(result);
+  //   const parsed = parseModelJSON(text);
 
-    if (!subject || !body) {
-      debugLog("invalid-json", text ? text.slice(0, 120) : "empty-response");
+  //   let subject = clean(parsed?.subject);
+  //   let body = clean(parsed?.body);
 
-      // Retry using a rigid plain-text format if JSON output is malformed.
-      const fallbackFormatPrompt = buildFallbackFormatPrompt({
-        lead,
-        kind,
-        fallback
-      });
-      const retryResult = await requestModel(ai, fallbackFormatPrompt, false);
-      const retryText = extractText(retryResult);
-      const retryParsed = parseLabeledText(retryText);
-      const retryLoose = parseLooseJsonFields(retryText);
+  //   if (!subject || !body) {
+  //     const loose = parseLooseJsonFields(text);
+  //     subject = subject || clean(loose?.subject);
+  //     body = body || clean(loose?.body);
+  //   }
 
-      subject = clean(retryParsed?.subject || retryLoose?.subject);
-      body = clean(retryParsed?.body || retryLoose?.body);
-    }
+  //   if (!subject || !body) {
+  //     debugLog("invalid-json", text ? text.slice(0, 120) : "empty-response");
 
-    if (!subject || !body) {
-      debugLog("missing-subject-or-body");
-      return variantFallback;
-    }
+  //     // Retry using a rigid plain-text format if JSON output is malformed.
+  //     const fallbackFormatPrompt = buildFallbackFormatPrompt({
+  //       lead,
+  //       kind,
+  //       fallback
+  //     });
+  //     const retryResult = await requestModel(ai, fallbackFormatPrompt, false);
+  //     const retryText = extractText(retryResult);
+  //     const retryParsed = parseLabeledText(retryText);
+  //     const retryLoose = parseLooseJsonFields(retryText);
 
-    return {
-      ...fallback,
-      subject,
-      body
-    };
-  } catch (error) {
-    debugLog("request-error", error?.message || "unknown");
-    return variantFallback;
-  }
+  //     subject = clean(retryParsed?.subject || retryLoose?.subject);
+  //     body = clean(retryParsed?.body || retryLoose?.body);
+  //   }
+
+  //   if (!subject || !body) {
+  //     debugLog("missing-subject-or-body");
+  //     return variantFallback;
+  //   }
+
+  //   return {
+  //     ...fallback,
+  //     subject,
+  //     body
+  //   };
+  // } catch (error) {
+  //   debugLog("request-error", error?.message || "unknown");
+  //   return variantFallback;
+  // }
 }
