@@ -2,7 +2,7 @@ name: Schedule Send Mails
 
 on:
   schedule:
-  - cron: 44, 8 * * 1-4 
+  - cron: 59, 8 * * *
 
   # 10:03–10:48 IST
   # - cron: "33,48 4 * * 1-4"
