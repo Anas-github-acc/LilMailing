@@ -28,15 +28,20 @@ export async function sendMailJob() {
     p_limit: max
   });
 
+  console.log('max = ', max)
+
+  
   if (leadsError) {
     log(["rpc_get_leads_to_send failed", leadsError.message]);
     return;
   }
-
+  
   if (!leads.length) {
     log(["sendMailJob no-op", "No eligible leads for this tick"]);
     return;
   }
+
+  console.log("[sendMailJob] Mail sent to :", leads);
 
   for (let i = 0; i < leads.length; i += 1) {
     const lead = leads[i];
