@@ -2,7 +2,7 @@ name: Schedule Send Mails
 
 on:
   schedule:
-  - cron: "*/5 * * * *"
+    - cron: "*/5 * * * *"
 
   # 10:03–10:48 IST
   # - cron: "33,48 4 * * 1-4"
@@ -16,7 +16,7 @@ on:
 
   # # Final block
   # - cron: "3,18,33 10 * * 1-4"
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   send-mails:
