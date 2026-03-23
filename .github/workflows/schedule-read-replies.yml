@@ -2,9 +2,8 @@ name: Schedule Read Replies
 
 on:
   schedule:
-    # Every 20 minutes, Monday-Thursday
-    # - cron: "*/5 * * * *"
     - cron: "0 8 * * *"
+      timezone: "Asia/Kolkata"
   workflow_dispatch:
 
 jobs:
