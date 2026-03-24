@@ -66,7 +66,15 @@ function buildFirstVariant(lead, fallback) {
       "",
       cta,
       "",
-      "Best regards,"
+      "Best regards,",     
+      `--
+Anas
+BTech Information Technology, 3rd Year
+Indian Institute of Information Technology, Vadodara
+Call: (+91) 8081233871
+GitHub: https://github.com/Anas-github-acc
+LinkedIn: https://linkedin.com/in/anas-um\n
+      `
     ].join("\n")
   };
 }
@@ -102,7 +110,20 @@ function buildFollowUpVariant(lead, fallback) {
   return {
     ...fallback,
     subject,
-    body: [opening, customLine, "", "Best,"].join("\n")
+    body: [
+      opening,
+      customLine,
+      "",
+      "Best,",
+      `--
+Anas
+BTech Information Technology, 3rd Year
+Indian Institute of Information Technology, Vadodara
+Call: (+91) 8081233871
+GitHub: https://github.com/Anas-github-acc
+LinkedIn: https://linkedin.com/in/anas-um\n
+      `
+    ].join("\n")
   };
 }
 

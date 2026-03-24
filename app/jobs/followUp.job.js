@@ -3,11 +3,25 @@ import { followUpEmail } from "../services/mail/template.js";
 import { delay } from "../utils/helpers.js";
 import { supabase } from "../services/db/supabase.js";
 import { env } from "../config/env.js";
+import { log } from "../utils/logger.js";
+import { validateRecipientDeliverability } from "../utils/validator.js";
 
 export async function followUpJob() {
   const { data: leads } = await supabase.rpc("rpc_get_followups");
 
   for (const lead of leads) {
+    const recipientCheck = await validateRecipientDeliverability(lead.email);
+
+    if (!recipientCheck.ok) {
+      log([
+        "followUpJob skipped lead",
+        `lead_id=${lead.id}`,
+        `email=${lead.email}`,
+        `reason=${recipientCheck.reason}`
+      ]);
+      continue;
+    }
+
     const mail = await followUpEmail(lead);
 
     const messageId = await sendMail(

@@ -4,6 +4,7 @@ import { delay } from "../utils/helpers.js";
 import { supabase } from "../services/db/supabase.js";
 import { env } from "../config/env.js";
 import { log } from "../utils/logger.js";
+import { validateRecipientDeliverability } from "../utils/validator.js";
 
 // async function syncWarmupModeFromRpc() {
 //   const { error } = await supabase.rpc("rpc_sync_warmup_mode");
@@ -45,6 +46,18 @@ export async function sendMailJob() {
 
   for (let i = 0; i < leads.length; i += 1) {
     const lead = leads[i];
+    // const recipientCheck = await validateRecipientDeliverability(lead.email);
+
+    // if (!recipientCheck.ok) {
+    //   log([
+    //     "sendMailJob skipped lead",
+    //     `lead_id=${lead.id}`,
+    //     `email=${lead.email}`,
+    //     `reason=${recipientCheck.reason}`
+    //   ]);
+    //   continue;
+    // }
+
     const mail = await firstEmail(lead);
     const messageId = await sendMail(
       lead.email,

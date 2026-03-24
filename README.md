@@ -86,6 +86,28 @@ When fallback is triggered, the app now randomizes these parts to avoid identica
 - Opening sentence (from 5 variants)
 - One custom line (from 5 variants)
 
+## Recipient Safety Checks (Anti-Bounce)
+
+Before sending any first email or follow-up, the app now validates recipient deliverability:
+
+1. Email format check
+2. Disposable-domain check
+3. MX record check
+
+If any check fails, that recipient is skipped and no email is sent.
+
+### Optional environment variables
+
+Add these to `.env` when needed:
+
+```
+# Extra disposable domains to block (comma-separated)
+DISPOSABLE_EMAIL_DOMAINS=mailinator.com,tempmail.com,10minutemail.com
+
+# DNS MX lookup timeout in milliseconds
+EMAIL_MX_LOOKUP_TIMEOUT_MS=5000
+```
+
 ## Deploy With GitHub Actions Scheduler
 
 This repo now includes ready workflows:

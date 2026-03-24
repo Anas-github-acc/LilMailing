@@ -18,5 +18,7 @@ export const env = {
   SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
   GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
   GOOGLE_AI_MODEL: process.env.GOOGLE_AI_MODEL || "gemini-2.5-flash",
-  AI_EMAIL_DEBUG: process.env.AI_EMAIL_DEBUG === "true"
+  AI_EMAIL_DEBUG: process.env.AI_EMAIL_DEBUG === "true",
+  DISPOSABLE_EMAIL_DOMAINS: process.env.DISPOSABLE_EMAIL_DOMAINS || "",
+  EMAIL_MX_LOOKUP_TIMEOUT_MS: Number(process.env.EMAIL_MX_LOOKUP_TIMEOUT_MS || 5000)
 };
