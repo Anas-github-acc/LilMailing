@@ -9,7 +9,7 @@ function pick(items) {
 }
 
 function buildFirstVariant(lead, fallback) {
-  const name = clean(lead?.name, "Hiring Team");
+  const name = clean(lead?.name, "Hiring Team").split(" ")[0];
   const company = clean(lead?.company, "your company");
   const role = clean(lead?.role || lead?.title, "backend/devops role");
 
