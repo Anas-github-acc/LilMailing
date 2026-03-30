@@ -13,18 +13,24 @@ function buildFirstVariant(lead, fallback) {
   const company = clean(lead?.company, "your company");
   const role = clean(lead?.role || lead?.title, "backend/devops role");
 
+  // const subject = pick([
+  //   `Inquiry: Engineering at ${company} | Experience in Full-stack (Go/AWS)`,
+  //   `Interest in Engineering Roles at ${company} - Backend & AWS Experience`,
+  //   `Exploring Engineering Opportunities at ${company} (Go, Node.js, AWS)`,
+  //   `Backend/DevOps Internship Inquiry - Experience with Go & AWS`,
+  //   `Quick intro: interest in ${role} at ${company}`,
+  //   `Exploring opportunities with ${company} (${role})`,
+  //   `Internship/entry-level interest at ${company}`,
+  //   `Question about ${company} engineering roles`,
+  //   `Potential fit for ${company} backend team`
+  // ]);
+
   const subject = pick([
-    `Inquiry: Engineering at ${company} | Experience in Full-stack (Go/AWS)`,
-    `Engineering Inquiry - Backend/DevOps Experience (Go, AWS, Terraform)`,
-    `Interest in Engineering Roles at ${company} - Backend & AWS Experience`,
-    `CS Student with Backend + AWS Deployment Experience | ${company}`,
-    `Exploring Engineering Opportunities at ${company} (Go, Node.js, AWS)`,
-    `Backend/DevOps Internship Inquiry - Experience with Go & AWS`,
-    `Quick intro: interest in ${role} at ${company}`,
-    `Exploring opportunities with ${company} (${role})`,
-    `Internship/entry-level interest at ${company}`,
-    `Question about ${company} engineering roles`,
-    `Potential fit for ${company} backend team`
+    `Full-Stack Internship Inquiry - ${company}`,
+    `Interest in Full-Stack Roles at ${company}`,
+    `Full-Stack Developer Interest | ${company}`,
+    `Quick Intro - Full-Stack Developer (${company})`,
+    `Exploring Full-Stack Opportunities at ${company}`
   ]);
 
   const opening = pick([
@@ -35,20 +41,37 @@ function buildFirstVariant(lead, fallback) {
     `I came across ${company} recently and thought it would be worth introducing myself.`
   ]);
 
+  // const customLine = pick([
+  //   "I enjoy building reliable backend systems and shipping end-to-end features in production.",
+  //   "My recent work includes API development, integrations, and deployment workflows on AWS.",
+  //   "I am especially interested in roles where I can contribute across backend engineering and DevOps.",
+  //   "I am looking for a team where I can learn fast and contribute from day one."
+  // ]);
+
+  // -- Full stack -- 
   const customLine = pick([
-    "I enjoy building reliable backend systems and shipping end-to-end features in production.",
-    "My recent work includes API development, integrations, and deployment workflows on AWS.",
-    "I am especially interested in roles where I can contribute across backend engineering and DevOps.",
-    "I am looking for a team where I can learn fast and contribute from day one."
+    "am especially interested in roles where I can contribute across both frontend and backend development.",
+    "I am particularly interested in building scalable full-stack applications used in real-world production.",
+    "I am excited about opportunities involving end-to-end feature development across modern web stacks.",
+    "I am looking for roles where I can contribute to both user-facing features and backend systems.",
+    "I am especially interested in teams building reliable full-stack platforms at scale."
   ]);
 
-  const cta = pick([
-    "Would you be open to a short chat next week?",
-    "Is it possible to have a 10-15 minute conversation?",
-    "Happy to share more details if there is a relevant opening. Can we connect?",
-    "If this aligns with your current hiring needs, I would value a brief conversation.",
-    "Would a quick call sometime next week work for you?"
-  ]);
+  // const cta = pick([
+  //   "Would you be open to a short chat next week?",
+  //   "Is it possible to have a 10-15 minute conversation?",
+  //   "Happy to share more details if there is a relevant opening. Can we connect?",
+  //   "If this aligns with your current hiring needs, I would value a brief conversation.",
+  //   "Would a quick call sometime next week work for you?"
+  // ]);
+
+  const closing = pick([
+  "Thank you for your time and consideration.",
+  "Thank you for taking the time to read my email.",
+  "I appreciate your time and attention.",
+  "Thank you for considering my profile.",
+  "Thank you for your time — I truly appreciate it."
+]);
 
   return {
     ...fallback,
@@ -58,11 +81,17 @@ function buildFirstVariant(lead, fallback) {
       "",
       opening,
       "",
-      "I’m Anas, a CS student with ~6 months of production experience building and deploying full-stack systems. I’ve worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I’ve handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also a open source contributor and have contributed to Vercel’s Next.js.",
+      "My name is Anas, and I am a full-stack developer with 7+ months of production experience building and deploying scalable web applications. I primarily use TypeScript, Python, and Go, and also have hands-on experience working with React.js, Node.js, and Next.js.",
+      "",
+      "Here are a few highlights of my qualifications:",
+      "- Worked as an SDE Intern for 7+ months, building and deploying production-grade features and backend services",
+      "- Handled end-to-end development workflows, from frontend interfaces to backend services and deployment pipelines",
+      "- Deployed cloud-native systems on AWS using Terraform, Kubernetes (EKS), and CI/CD pipelines",
+      // "I’m Anas, a CS student with ~6 months of production experience building and deploying full-stack systems. I’ve worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I’ve handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also a open source contributor and have contributed to Vercel’s Next.js.",
       "",
       customLine,
       "",
-      cta,
+      closing,
       "",
       "Best regards,",     
       `--
