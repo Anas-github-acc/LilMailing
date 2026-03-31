@@ -50,7 +50,7 @@ function buildFirstVariant(lead, fallback) {
 
   // -- Full stack -- 
   const customLine = pick([
-    "am especially interested in roles where I can contribute across both frontend and backend development.",
+    "I am especially interested in roles where I can contribute across both frontend and backend development.",
     "I am particularly interested in building scalable full-stack applications used in real-world production.",
     "I am excited about opportunities involving end-to-end feature development across modern web stacks.",
     "I am looking for roles where I can contribute to both user-facing features and backend systems.",
