@@ -70,7 +70,7 @@ function buildFirstVariant(lead, fallback) {
   "Thank you for taking the time to read my email.",
   "I appreciate your time and attention.",
   "Thank you for considering my profile.",
-  "Thank you for your time — I truly appreciate it."
+  "Thank you for your time and I truly appreciate it."
 ]);
 
   return {
