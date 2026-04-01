@@ -2,25 +2,32 @@ name: Schedule Send Mails
 
 on:
   schedule:
-    # 10:03–10:48 IST block
-    - cron: '3,18,33,48 10 * * *'
+    schedule:
+    - cron: '0,15,30,45 8-13 * * *'
       timezone: 'Asia/Kolkata'
 
-    # 11:03–14:48 IST block (irregular spacing)
-    - cron: '3,21,37,52 11 * * *'
+    - cron: '0 14 * * *'
       timezone: 'Asia/Kolkata'
-    - cron: '6,24,41,57 12 * * *'
-      timezone: 'Asia/Kolkata'
-    - cron: '2,19,36,54 13 * * *'
-      timezone: 'Asia/Kolkata'
-    - cron: '8,26,43,59 14 * * *'
-      timezone: 'Asia/Kolkata'
+
+    # # 10:03–10:48 IST block
+    # - cron: '3,18,33,48 10 * * *'
+    #   timezone: 'Asia/Kolkata'
+
+    # # 11:03–14:48 IST block (irregular spacing)
+    # - cron: '3,21,37,52 11 * * *'
+    #   timezone: 'Asia/Kolkata'
+    # - cron: '6,24,41,57 12 * * *'
+    #   timezone: 'Asia/Kolkata'
+    # - cron: '2,19,36,54 13 * * *'
+    #   timezone: 'Asia/Kolkata'
+    # - cron: '8,26,43,59 14 * * *'
+    #   timezone: 'Asia/Kolkata'
     
-    # Final blocks
-    - cron: '4,22,39,55 15 * * *'
-      timezone: 'Asia/Kolkata'
-    - cron: '3,18,33 16 * * *'
-      timezone: 'Asia/Kolkata'
+    # # Final blocks
+    # - cron: '4,22,39,55 15 * * *'
+    #   timezone: 'Asia/Kolkata'
+    # - cron: '3,18,33 16 * * *'
+    #   timezone: 'Asia/Kolkata'
   
   workflow_dispatch:
 
