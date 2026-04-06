@@ -35,7 +35,6 @@ function buildFirstVariant(lead, fallback) {
 
   const opening = pick([
     `Hope you are doing well. I recently came across ${company} and wanted to reach out directly.`,
-    `I have been following ${company} and wanted to introduce myself for potential opportunities.`,
     `I noticed ${company} while exploring teams building strong engineering products and wanted to connect.`,
     `I wanted to send a brief note to see if ${company} is considering interns or early-career engineers.`,
     `I came across ${company} recently and thought it would be worth introducing myself.`
@@ -81,12 +80,7 @@ function buildFirstVariant(lead, fallback) {
       "",
       opening,
       "",
-      "My name is Anas, and I am a full-stack developer with 7+ months of production experience building and deploying scalable web applications. I primarily use TypeScript, Python, and Go, and also have hands-on experience working with React.js, Node.js, and Next.js.",
-      "",
-      "Here are a few highlights of my qualifications:",
-      "- Worked as an SDE Intern for 7+ months, building and deploying production-grade features and backend services",
-      "- Handled end-to-end development workflows, from frontend interfaces to backend services and deployment pipelines",
-      "- Deployed cloud-native systems on AWS using Terraform, Kubernetes (EKS), and CI/CD pipelines",
+      "My name is Anas, and I am a full-stack developer with 7+ months of SDE experience building and deploying scalable web applications. My core languages are TypeScript, Python, and Go, and I have hands-on experience working with Node.js, React and Next.js for end-to-end development. I have deployed cloud-native systems on AWS using Terraform, Kubernetes (EKS), and CI/CD pipelines.",
       // "I’m Anas, a CS student with ~6 months of production experience building and deploying full-stack systems. I’ve worked with TypeScript, Go, and Python, and built microservices and REST APIs using Node.js, React.js, and Next.js. I’ve handled end-to-end backend and deployment workflows - from API design and state management to integrating third-party services and deploying production systems on AWS using Terraform and CI/CD pipelines. I am also a open source contributor and have contributed to Vercel’s Next.js.",
       "",
       customLine,
