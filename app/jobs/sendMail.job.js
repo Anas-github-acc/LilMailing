@@ -14,7 +14,29 @@ import { validateRecipientDeliverability } from "../utils/validator.js";
 //   }
 // }
 
+const now = new Date();
+
+// Convert to IST
+const istTime = new Date(
+  now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+);
+
+const hour = istTime.getHours();
+
+function shouldRun() {
+  if (hour >= 8 && hour < 22) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function sendMailJob() {
+
+  if (!shouldRun()) {
+    log(["sendMailJob skipped", "Not the scheduled time"]);
+    return;
+  }
 
   // const { data: system, error: systemError } = await supabase.rpc("rpc_get_system_state");
   // if (systemError) {

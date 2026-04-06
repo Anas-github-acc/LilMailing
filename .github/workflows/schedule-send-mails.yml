@@ -2,10 +2,7 @@ name: Schedule Send Mails
 
 on:
   schedule:
-    - cron: '0,15,30,45 8-13 * * *'
-      timezone: 'Asia/Kolkata'
-
-    - cron: '0 14 * * *'
+    - cron: "*/20 * * * *"
       timezone: 'Asia/Kolkata'
 
     # # 10:03–10:48 IST block
