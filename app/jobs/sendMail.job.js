@@ -24,7 +24,7 @@ const istTime = new Date(
 const hour = istTime.getHours();
 
 function shouldRun() {
-  if (hour >= 8 && hour < 22) {
+  if (hour >= 5 && hour < 24) {
     return true;
   }
 
