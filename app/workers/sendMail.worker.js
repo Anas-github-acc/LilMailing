@@ -11,6 +11,7 @@ export async function sendMailWorker() {
     p_user_id: env.USER_ID
   });
 
+
   if (checkError) {
     log(["check_campaigns_to_run failed", checkError.message]);
     return;
@@ -18,11 +19,11 @@ export async function sendMailWorker() {
 
   const compaignCheck = check?.[0];
 
-  if (!check?.shouldRun) {
+  if (!compaignCheck?.should_run) {
     log(["sendMailWorker skipped", "No campaigns scheduled to run at this time"]);
     return;
   }
-
+  
   const compaignId = compaignCheck.campaign_id;
   const user_id = env.USER_ID;
 
