@@ -3,8 +3,7 @@
 import { supabase } from "../db/supabase.js";
 
 
-export async function renderTemplate(subject, body, context, attachment = null) {
-
+export async function renderTemplate(subject, body, context, attachment) {
   function parseTemplate(template, context = {}) {
     let result = template;
     const innerTagRegex = /\{\{([^{}]*)\}\}|\[\[([^\[\]]*)\]\]/;
@@ -58,28 +57,36 @@ export async function renderTemplate(subject, body, context, attachment = null) 
   const renderedBody = parseTemplate(body, context);
 
   if (attachment) {
-    const { data, error } = await supabase.storage
-      .from("template-attachments")
-      .download(attachment.path);
+    const res = await fetch(attachment.url);
 
-    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-      .from("template-attachments")
-      .createSignedUrl(attachment.path, 60 * 5);
-
-    if (error) {
-      console.error("Error downloading attachment:", error);
-      throw new Error("Failed to download attachment");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch file: ${response.statusText}`);
     }
-
-    if (signedUrlError) {
-      console.error("Error creating signed URL:", signedUrlError);
-      throw new Error("Failed to create signed URL for attachment");
-    }
-
-    const res = await fetch(signedUrlData.signedUrl);
-    if (!res.ok) throw new Error("Failed to download attachment");
 
     const arrayBuffer = await res.arrayBuffer();
+    
+    // Convert it to a buffer or blob depending on your backend needs
+    // const { data, error } = await supabase.storage
+    //   .from("template-attachments")
+    //   .download(attachment.path);
+    //
+    // const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+    //   .from("template-attachments")
+    //   .createSignedUrl(attachment.path, 60 * 5);
+    //
+    // if (error) {
+    //   console.error("Error downloading attachment:", error);
+    //   throw new Error("Failed to download attachment");
+    // }
+    //
+    // if (signedUrlError) {
+    //   console.error("Error creating signed URL:", signedUrlError);
+    //   throw new Error("Failed to create signed URL for attachment");
+    // }
+    //
+    // const res = await fetch(signedUrlData.signedUrl);
+    // if (!res.ok) throw new Error("Failed to download attachment");
+    //
 
     return {
       subject: renderedSubject,

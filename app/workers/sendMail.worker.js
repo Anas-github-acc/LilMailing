@@ -51,6 +51,7 @@ export async function sendMailWorker() {
       subject,
       body_html,
       attachment_name,
+      attachment_url,
       attachment_path,
       attachment_size,
       attachment_mime_type,
@@ -95,8 +96,9 @@ export async function sendMailWorker() {
         company: lead.lead_company,
         role: lead.lead_role,
       },
-      lead.attachment ? {
+      lead.attachment_path ? {
         name: lead.attachment_name,
+        url: lead.attachment_url,
         path: lead.attachment_path,
         size: lead.attachment_size,
         mime_type: lead.attachment_mime_type
