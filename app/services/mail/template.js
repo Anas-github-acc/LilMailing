@@ -121,7 +121,7 @@ export async function renderTemplate(subject, body, context, attachment) {
 //   return {
 //     subject: `Inquiry: Engineering at ${lead.company} | Experience in Full-stack`,
 //     body: `
-// Hello ${lead.name},
+// Hello ${lead.lead},
 
 // Hope you're having a great week.
 
@@ -151,9 +151,9 @@ export async function renderTemplate(subject, body, context, attachment) {
 
 // function buildFollowUpFallback(lead) {
 //   return {
-//     subject: `Re: Quick question, ${lead.name}`,
+//     subject: `Re: Quick question, ${lead.lead}`,
 //     body: `
-// Hi ${lead.name},
+// Hi ${lead.lead},
 
 // Just following up once in case this got buried.
 

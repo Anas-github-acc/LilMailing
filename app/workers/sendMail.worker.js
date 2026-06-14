@@ -92,7 +92,7 @@ export async function sendMailWorker() {
       lead.template_subject,
       lead.template_body,
       {
-        name: lead.lead_name,
+        lead: lead.lead_name,
         company: lead.lead_company,
         role: lead.lead_role,
       },
