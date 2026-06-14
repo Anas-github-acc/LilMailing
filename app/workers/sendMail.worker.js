@@ -50,6 +50,8 @@ export async function sendMailWorker() {
 
       subject,
       body_html,
+      template_variables, <-- new row
+      user_template_variables, <-- new row
       attachment_name,
       attachment_url,
       attachment_path,
@@ -95,6 +97,8 @@ export async function sendMailWorker() {
         lead: lead.lead_name,
         company: lead.lead_company,
         role: lead.lead_role,
+        ...(lead.template_variables || {}),
+        ...(lead.user_template_variables || {}),
       },
       lead.attachment_path ? {
         name: lead.attachment_name,
